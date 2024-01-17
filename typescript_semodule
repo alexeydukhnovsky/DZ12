@@ -1,0 +1,619 @@
+Script started on 2024-01-17 10:57:47+03:00 [TERM="xterm-256color" TTY="/dev/pts/0" COLUMNS="204" LINES="50"]
+[?2004h]0;alexey@UbuntuOTUS: ~/DZ12[01;32malexey@UbuntuOTUS[00m:[01;34m~/DZ12[00m$ vagrant ssh
+[?2004lLast login: Wed Jan 17 07:18:55 2024 from 10.0.2.2
+]0;vagrant@selinux:~[?1034h[vagrant@selinux ~]$ sudo -i
+]0;root@selinux:~[?1034h[root@selinux ~]# systemctl start nginx
+Job for nginx.service failed because the control process exited with error code. See "systemctl status nginx.service" and "journalctl -xe" for details.
+]0;root@selinux:~[root@selinux ~]# grep nginx /var/log/audit/audit.log
+type=SOFTWARE_UPDATE msg=audit(1705475140.441:802): pid=2662 uid=0 auid=1000 ses=2 subj=unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023 msg='sw="[01;31m[Knginx[m[K-filesystem-1:1.20.1-10.el7.noarch" sw_type=rpm key_enforce=0 gpg_res=1 root_dir="/" comm="yum" exe="/usr/bin/python2.7" hostname=? addr=? terminal=? res=success'
+type=SOFTWARE_UPDATE msg=audit(1705475141.529:804): pid=2662 uid=0 auid=1000 ses=2 subj=unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023 msg='sw="[01;31m[Knginx[m[K-1:1.20.1-10.el7.x86_64" sw_type=rpm key_enforce=0 gpg_res=1 root_dir="/" comm="yum" exe="/usr/bin/python2.7" hostname=? addr=? terminal=? res=success'
+type=AVC msg=audit(1705475155.314:814): avc:  denied  { name_bind } for  pid=2928 comm="[01;31m[Knginx[m[K" src=4881 scontext=system_u:system_r:httpd_t:s0 tcontext=system_u:object_r:unreserved_port_t:s0 tclass=tcp_socket permissive=0
+type=SYSCALL msg=audit(1705475155.314:814): arch=c000003e syscall=49 success=no exit=-13 a0=6 a1=558a402e98b8 a2=10 a3=7ffd6311cbc0 items=0 ppid=1 pid=2928 auid=4294967295 uid=0 gid=0 euid=0 suid=0 fsuid=0 egid=0 sgid=0 fsgid=0 tty=(none) ses=4294967295 comm="[01;31m[Knginx[m[K" exe="/usr/sbin/[01;31m[Knginx[m[K" subj=system_u:system_r:httpd_t:s0 key=(null)
+type=SERVICE_START msg=audit(1705475155.314:815): pid=1 uid=0 auid=4294967295 ses=4294967295 subj=system_u:system_r:init_t:s0 msg='unit=[01;31m[Knginx[m[K comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=failed'
+type=SERVICE_START msg=audit(1705475768.722:856): pid=1 uid=0 auid=4294967295 ses=4294967295 subj=system_u:system_r:init_t:s0 msg='unit=[01;31m[Knginx[m[K comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+type=SERVICE_STOP msg=audit(1705475955.069:895): pid=1 uid=0 auid=4294967295 ses=4294967295 subj=system_u:system_r:init_t:s0 msg='unit=[01;31m[Knginx[m[K comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+type=SERVICE_START msg=audit(1705476684.926:903): pid=1 uid=0 auid=4294967295 ses=4294967295 subj=system_u:system_r:init_t:s0 msg='unit=[01;31m[Knginx[m[K comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+type=SERVICE_STOP msg=audit(1705476766.248:907): pid=1 uid=0 auid=4294967295 ses=4294967295 subj=system_u:system_r:init_t:s0 msg='unit=[01;31m[Knginx[m[K comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=success'
+type=AVC msg=audit(1705478295.672:944): avc:  denied  { name_bind } for  pid=3182 comm="[01;31m[Knginx[m[K" src=4881 scontext=system_u:system_r:httpd_t:s0 tcontext=system_u:object_r:unreserved_port_t:s0 tclass=tcp_socket permissive=0
+type=SYSCALL msg=audit(1705478295.672:944): arch=c000003e syscall=49 success=no exit=-13 a0=6 a1=5621dd8c48b8 a2=10 a3=7ffc5cd67f50 items=0 ppid=1 pid=3182 auid=4294967295 uid=0 gid=0 euid=0 suid=0 fsuid=0 egid=0 sgid=0 fsgid=0 tty=(none) ses=4294967295 comm="[01;31m[Knginx[m[K" exe="/usr/sbin/[01;31m[Knginx[m[K" subj=system_u:system_r:httpd_t:s0 key=(null)
+type=SERVICE_START msg=audit(1705478295.680:945): pid=1 uid=0 auid=4294967295 ses=4294967295 subj=system_u:system_r:init_t:s0 msg='unit=[01;31m[Knginx[m[K comm="systemd" exe="/usr/lib/systemd/systemd" hostname=? addr=? terminal=? res=failed'
+]0;root@selinux:~[root@selinux ~]# grep nginx /var/log/audit/audit.log | audit2allow -M nginx
+******************** IMPORTANT ***********************
+To make this policy package active, execute:
+
+semodule -i nginx.pp
+
+]0;root@selinux:~[root@selinux ~]# semodule -i nginx.pp
+]0;root@selinux:~[root@selinux ~]# systemctl start nginx
+]0;root@selinux:~[root@selinux ~]# systemctl start nginx[C[1P[1P nginxt nginxu nginxs nginx[1Pnginx nginx[C[C[C[C[C -l
+[1;32m●[0m nginx.service - The nginx HTTP and reverse proxy server
+   Loaded: loaded (/usr/lib/systemd/system/nginx.service; disabled; vendor preset: disabled)
+   Active: [1;32mactive (running)[0m since Wed 2024-01-17 07:59:51 UTC; 8s ago
+  Process: 3209 ExecStart=/usr/sbin/nginx (code=exited, status=0/SUCCESS)
+  Process: 3206 ExecStartPre=/usr/sbin/nginx -t (code=exited, status=0/SUCCESS)
+  Process: 3205 ExecStartPre=/usr/bin/rm -f /run/nginx.pid (code=exited, status=0/SUCCESS)
+ Main PID: 3211 (nginx)
+   CGroup: /system.slice/nginx.service
+           ├─3211 nginx: master process /usr/sbin/ngin
+           └─3213 nginx: worker proces
+
+Jan 17 07:59:51 selinux systemd[1]: Starting The nginx HTTP and reverse proxy server...
+Jan 17 07:59:51 selinux nginx[3206]: nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+Jan 17 07:59:51 selinux nginx[3206]: nginx: configuration file /etc/nginx/nginx.conf test is successful
+Jan 17 07:59:51 selinux systemd[1]: Started The nginx HTTP and reverse proxy server.
+]0;root@selinux:~[root@selinux ~]# curl http://127.0.0.1:4881
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <title>Welcome to CentOS</title>
+  <style rel="stylesheet" type="text/css"> 
+
+	html {
+	background-image:url(img/html-background.png);
+	background-color: white;
+	font-family: "DejaVu Sans", "Liberation Sans", sans-serif;
+	font-size: 0.85em;
+	line-height: 1.25em;
+	margin: 0 4% 0 4%;
+	}
+
+	body {
+	border: 10px solid #fff;
+	margin:0;
+	padding:0;
+	background: #fff;
+	}
+
+	/* Links */
+
+	a:link { border-bottom: 1px dotted #ccc; text-decoration: none; color: #204d92; }
+	a:hover { border-bottom:1px dotted #ccc; text-decoration: underline; color: green; }
+	a:active {  border-bottom:1px dotted #ccc; text-decoration: underline; color: #204d92; }
+	a:visited { border-bottom:1px dotted #ccc; text-decoration: none; color: #204d92; }
+	a:visited:hover { border-bottom:1px dotted #ccc; text-decoration: underline; color: green; }
+ 
+	.logo a:link,
+	.logo a:hover,
+	.logo a:visited { border-bottom: none; }
+
+	.mainlinks a:link { border-bottom: 1px dotted #ddd; text-decoration: none; color: #eee; }
+	.mainlinks a:hover { border-bottom:1px dotted #ddd; text-decoration: underline; color: white; }
+	.mainlinks a:active { border-bottom:1px dotted #ddd; text-decoration: underline; color: white; }
+	.mainlinks a:visited { border-bottom:1px dotted #ddd; text-decoration: none; color: white; }
+	.mainlinks a:visited:hover { border-bottom:1px dotted #ddd; text-decoration: underline; color: white; }
+
+	/* User interface styles */
+
+	#header {
+	margin:0;
+	padding: 0.5em;
+	background: #204D8C url(img/header-background.png);
+	text-align: left;
+	}
+
+	.logo {
+	padding: 0;
+	/* For text only logo */
+	font-size: 1.4em;
+	line-height: 1em;
+	font-weight: bold;
+	}
+
+	.logo img {
+	vertical-align: middle;
+	padding-right: 1em;
+	}
+
+	.logo a {
+	color: #fff;
+	text-decoration: none;
+	}
+
+	p {
+	line-height:1.5em;
+	}
+
+	h1 { 
+		margin-bottom: 0;
+		line-height: 1.9em; }
+	h2 { 
+		margin-top: 0;
+		line-height: 1.7em; }
+
+	#content {
+	clear:both;
+	padding-left: 30px;
+	padding-right: 30px;
+	padding-bottom: 30px;
+	border-bottom: 5px solid #eee;
+	}
+
+    .mainlinks {
+        float: right;
+        margin-top: 0.5em;
+        text-align: right;
+    }
+
+    ul.mainlinks > li {
+    border-right: 1px dotted #ddd;
+    padding-right: 10px;
+    padding-left: 10px;
+    display: inline;
+    list-style: none;
+    }
+
+    ul.mainlinks > li.last,
+    ul.mainlinks > li.first {
+    border-right: none;
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+<div id="header">
+
+    <ul class="mainlinks">
+        <li> <a href="http://www.centos.org/">Home</a> </li>
+        <li> <a href="http://wiki.centos.org/">Wiki</a> </li>
+        <li> <a href="http://wiki.centos.org/GettingHelp/ListInfo">Mailing Lists</a></li>
+        <li> <a href="http://www.centos.org/download/mirrors/">Mirror List</a></li>
+        <li> <a href="http://wiki.centos.org/irc">IRC</a></li>
+        <li> <a href="https://www.centos.org/forums/">Forums</a></li>
+        <li> <a href="http://bugs.centos.org/">Bugs</a> </li>
+        <li class="last"> <a href="http://wiki.centos.org/Donate">Donate</a></li>
+    </ul>
+
+	<div class="logo">
+		<a href="http://www.centos.org/"><img src="img/centos-logo.png" border="0"></a>
+	</div>
+
+</div>
+
+<div id="content">
+
+	<h1>Welcome to CentOS</h1>
+
+	<h2>The Community ENTerprise Operating System</h2>
+
+	<p><a href="http://www.centos.org/">CentOS</a> is an Enterprise-class Linux Distribution derived from sources freely provided
+to the public by Red Hat, Inc. for Red Hat Enterprise Linux.  CentOS conforms fully with the upstream vendors
+redistribution policy and aims to be functionally compatible. (CentOS mainly changes packages to remove upstream vendor
+branding and artwork.)</p>
+
+	<p>CentOS is developed by a small but growing team of core
+developers.&nbsp; In turn the core developers are supported by an active user community
+including system administrators, network administrators, enterprise users, managers, core Linux contributors and Linux enthusiasts from around the world.</p>
+
+	<p>CentOS has numerous advantages including: an active and growing user community, quickly rebuilt, tested, and QA'ed errata packages, an extensive <a href="http://www.centos.org/download/mirrors/">mirror network</a>, developers who are contactable and responsive, Special Interest Groups (<a href="http://wiki.centos.org/SpecialInterestGroup/">SIGs</a>) to add functionality to the core CentOS distribution, and multiple community support avenues including a <a href="http://wiki.centos.org/">wiki</a>, <a
+href="http://wiki.centos.org/irc">IRC Chat</a>, <a href="http://wiki.centos.org/GettingHelp/ListInfo">Email Lists</a>, <a href="https://www.centos.org/forums/">Forums</a>, <a href="http://bugs.centos.org/">Bugs Database</a>, and an <a
+href="http://wiki.centos.org/FAQ/">FAQ</a>.</p>
+
+	</div>
+
+</div>
+
+
+</body>
+</html>
+]0;root@selinux:~[root@selinux ~]# semodule -l
+abrt	1.4.1
+accountsd	1.1.0
+acct	1.6.0
+afs	1.9.0
+aiccu	1.1.0
+aide	1.7.1
+ajaxterm	1.0.0
+alsa	1.12.2
+amanda	1.15.0
+amtu	1.3.0
+anaconda	1.7.0
+antivirus	1.0.0
+apache	2.7.2
+apcupsd	1.9.0
+apm	1.12.0
+application	1.2.0
+arpwatch	1.11.0
+asterisk	1.12.1
+auditadm	2.2.0
+authconfig	1.0.0
+authlogin	2.5.1
+automount	1.14.1
+avahi	1.14.1
+awstats	1.5.0
+bacula	1.2.0
+base	(null)
+bcfg2	1.1.0
+bind	1.13.1
+bitlbee	1.5.0
+blkmapd	1.0.0
+blueman	1.1.0
+bluetooth	3.5.0
+boinc	1.1.1
+boltd	1.0.0
+bootloader	1.14.0
+brctl	1.7.0
+brltty	1.0.0
+bugzilla	1.1.0
+bumblebee	1.0.0
+cachefilesd	1.1.0
+calamaris	1.8.0
+callweaver	1.1.0
+canna	1.12.0
+ccs	1.6.0
+cdrecord	2.6.0
+certmaster	1.3.0
+certmonger	1.2.0
+certwatch	1.8.0
+cfengine	1.1.0
+cgdcbxd	1.0.0
+cgroup	1.2.0
+chrome	1.0.0
+chronyd	1.2.0
+cinder	1.0.0
+cipe	1.6.0
+clock	1.7.0
+clogd	1.1.0
+cloudform	1.0
+cmirrord	1.1.0
+cobbler	1.2.0
+cockpit	1.0.0
+collectd	1.0.0
+colord	1.1.0
+comsat	1.8.0
+condor	1.0.1
+conman	1.0.0
+consolekit	1.9.0
+container	1.0.0
+couchdb	1.1.1
+courier	1.14.0
+cpucontrol	1.4.0
+cpufreqselector	1.4.0
+cpuplug	1.0.0
+cron	2.6.3
+ctdb	1.1.0
+cups	1.16.2
+cvs	1.10.2
+cyphesis	1.3.0
+cyrus	1.13.1
+daemontools	1.3.0
+dbadm	1.1.0
+dbskk	1.6.0
+dbus	1.19.0
+dcc	1.12.0
+ddclient	1.10.0
+denyhosts	1.1.0
+devicekit	1.3.1
+dhcp	1.11.0
+dictd	1.8.0
+dirsrv	1.0.0
+dirsrv-admin	1.0.0
+dmesg	1.3.0
+dmidecode	1.5.1
+dnsmasq	1.10.0
+dnssec	1.0.0
+dovecot	1.16.1
+drbd	1.1.0
+dspam	1.1.0
+entropyd	1.8.0
+exim	1.6.1
+fail2ban	1.5.0
+fcoe	1.1.0
+fetchmail	1.13.2
+finger	1.10.0
+firewalld	1.1.1
+firewallgui	1.1.0
+firstboot	1.13.0
+fprintd	1.2.0
+freeipmi	1.0.0
+freqset	1.0.0
+fstools	1.16.1
+ftp	1.15.1
+games	2.3.0
+ganesha	1.0.0
+gdomap	1.0.1
+geoclue	1.0.0
+getty	1.10.0
+git	1.3.2
+gitosis	1.4.0
+glance	1.1.0
+glusterd	1.1.2
+gnome	2.3.0
+gpg	2.8.0
+gpm	1.9.0
+gpsd	1.2.0
+gssproxy	1.0.0
+guest	1.3.0
+hddtemp	1.2.0
+hostname	1.8.1
+hsqldb	1.0.0
+hwloc	1.0.0
+hypervkvp	1.0.0
+icecast	1.2.0
+inetd	1.13.0
+init	1.20.1
+inn	1.11.0
+iodine	1.1.0
+iotop	1.0.0
+ipa	1.0.0
+ipmievd	1.0.0
+ipsec	1.14.0
+iptables	1.14.0
+irc	2.3.1
+irqbalance	1.6.0
+iscsi	1.9.0
+isns	1.0.0
+jabber	1.10.0
+jetty	1.0.0
+jockey	1.0.0
+journalctl	1.0.0
+kdump	1.3.0
+kdumpgui	1.2.0
+keepalived	1.0.0
+kerberos	1.12.0
+keyboardd	1.1.0
+keystone	1.1.0
+kismet	1.7.0
+kmscon	1.0
+kpatch	1.0.0
+ksmtuned	1.1.1
+ktalk	1.9.2
+l2tp	1.1.0
+ldap	1.11.1
+libraries	2.10.0
+likewise	1.3.0
+linuxptp	1.0.0
+lircd	1.2.0
+livecd	1.3.0
+lldpad	1.1.0
+loadkeys	1.9.0
+locallogin	1.12.0
+lockdev	1.5.0
+logadm	1.0.0
+logging	1.20.1
+logrotate	1.15.0
+logwatch	1.12.2
+lpd	1.14.0
+lsm	1.0.0
+lttng-tools	1.0.0
+lvm	1.15.2
+mailman	1.10.0
+mailscanner	1.1.0
+man2html	1.0.0
+mandb	1.1.1
+mcelog	1.2.0
+mediawiki	1.0.0
+memcached	1.3.1
+milter	1.5.0
+minidlna	0.1
+minissdpd	1.0.0
+mip6d	1.0.0
+mirrormanager	1.0.0
+miscfiles	1.11.0
+mock	1.0.0
+modemmanager	1.2.1
+modutils	1.14.0
+mojomojo	1.1.0
+mon_statd	1.0.0
+mongodb	1.1.0
+motion	1.0.0
+mount	1.16.1
+mozilla	2.8.0
+mpd	1.1.1
+mplayer	2.5.0
+mrtg	1.9.0
+mta	2.7.3
+munin	1.9.1
+mysql	1.14.1
+mythtv	1.0.0
+nagios	1.13.0
+namespace	1.0.0
+ncftool	1.2.0
+netlabel	1.3.0
+netutils	1.12.1
+networkmanager	1.15.2
+nginx	1.0
+ninfod	1.0.0
+nis	1.12.0
+nova	1.0.0
+nscd	1.11.0
+nsd	1.8.0
+nslcd	1.4.1
+ntop	1.10.0
+ntp	1.11.0
+numad	1.1.0
+nut	1.3.0
+nx	1.7.0
+obex	1.0.0
+oddjob	1.10.0
+openct	1.6.1
+opendnssec	1.0.0
+openhpid	1.0.0
+openshift	1.0.0
+openshift-origin	1.0.0
+opensm	1.0.0
+openvpn	1.12.2
+openvswitch	1.1.1
+openwsman	1.0.0
+oracleasm	1.0.0
+osad	1.0.0
+pads	1.1.0
+passenger	1.1.1
+pcmcia	1.7.0
+pcp	1.0.0
+pcscd	1.8.0
+pegasus	1.9.0
+permissivedomains	(null)
+pesign	1.0.0
+pingd	1.1.0
+piranha	1.0.0
+pkcs	1.0.1
+pki	10.0.11
+plymouthd	1.2.0
+podsleuth	1.7.0
+policykit	1.3.0
+polipo	1.1.1
+portmap	1.11.0
+portreserve	1.4.0
+postfix	1.15.1
+postgresql	1.16.0
+postgrey	1.9.0
+ppp	1.14.0
+prelink	1.11.0
+prelude	1.4.0
+privoxy	1.12.0
+procmail	1.13.1
+prosody	1.0.0
+psad	1.1.0
+ptchown	1.2.0
+publicfile	1.2.0
+pulseaudio	1.6.0
+puppet	1.4.0
+pwauth	1.0.0
+qmail	1.6.1
+qpid	1.1.0
+quantum	1.1.0
+quota	1.6.0
+rabbitmq	1.0.2
+radius	1.13.0
+radvd	1.14.0
+raid	1.13.1
+rasdaemon	1.0.0
+rdisc	1.8.0
+readahead	1.13.0
+realmd	1.1.0
+redis	1.0.1
+remotelogin	1.8.0
+rhcs	1.2.1
+rhev	1.0
+rhgb	1.9.0
+rhnsd	1.0.0
+rhsmcertd	1.1.1
+ricci	1.8.0
+rkhunter	1.0
+rlogin	1.11.3
+rngd	1.1.0
+roundup	1.8.0
+rpc	1.15.1
+rpcbind	1.6.1
+rpm	1.16.0
+rshd	1.8.1
+rssh	2.3.0
+rsync	1.13.0
+rtas	1.0.0
+rtkit	1.2.0
+rwho	1.7.0
+samba	1.16.3
+sambagui	1.2.0
+sandboxX	1.0.0
+sanlock	1.1.0
+sasl	1.15.1
+sbd	1.0.0
+sblim	1.1.0
+screen	2.6.0
+secadm	2.4.0
+sectoolm	1.1.0
+selinuxutil	1.17.2
+sendmail	1.12.1
+sensord	1.0.0
+setrans	1.8.0
+setroubleshoot	1.12.1
+seunshare	1.1.0
+sge	1.0.0
+shorewall	1.4.0
+slocate	1.12.2
+slpd	1.1.0
+smartmon	1.12.0
+smokeping	1.2.0
+smoltclient	1.2.0
+smsd	1.0.0
+snapper	1.0.0
+snmp	1.14.0
+snort	1.11.0
+sosreport	1.3.1
+soundserver	1.9.0
+spamassassin	2.6.1
+speech-dispatcher	1.0.0
+squid	1.12.1
+ssh	2.4.2
+sssd	1.2.0
+staff	2.4.0
+stapserver	1.1.0
+stunnel	1.11.0
+su	1.12.0
+sudo	1.10.0
+svnserve	1.1.0
+swift	1.0.0
+sysadm	2.6.1
+sysadm_secadm	1.0.0
+sysnetwork	1.15.4
+sysstat	1.8.0
+systemd	1.0.0
+tangd	1.0.0
+targetd	1.0.0
+tcpd	1.5.0
+tcsd	1.1.1
+telepathy	1.4.2
+telnet	1.11.3
+tftp	1.13.0
+tgtd	1.3.1
+thin	1.0
+thumb	1.0.0
+tlp	1.0.0
+tmpreaper	1.7.1
+tomcat	1.0.0
+tor	1.9.0
+tuned	1.2.0
+tvtime	2.3.0
+udev	1.16.2
+ulogd	1.3.0
+uml	2.3.0
+unconfined	3.5.0
+unconfineduser	1.0.0
+unlabelednet	1.0.0
+unprivuser	2.4.0
+updfstab	1.6.0
+usbmodules	1.3.0
+usbmuxd	1.2.0
+userdomain	4.9.1
+userhelper	1.8.1
+usermanage	1.19.0
+usernetctl	1.7.0
+uucp	1.13.0
+uuidd	1.1.0
+varnishd	1.2.0
+vdagent	1.1.1
+vhostmd	1.1.0
+virt	1.5.0
+vlock	1.2.0
+vmtools	1.0.0
+vmware	2.7.0
+vnstatd	1.1.0
+vpn	1.16.0
+w3c	1.1.0
+watchdog	1.8.0
+wdmd	1.1.0
+webadm	1.2.0
+webalizer	1.13.0
+wine	1.11.0
+wireshark	2.4.0
+xen	1.13.0
+xguest	1.2.0
+xserver	3.9.4
+zabbix	1.6.0
+zarafa	1.2.0
+zebra	1.13.0
+zoneminder	1.0.0
+zosremote	1.2.0
+]0;root@selinux:~[root@selinux ~]# semodule -r nginx
+libsemanage.semanage_direct_remove_key: Removing last nginx module (no other nginx module exists at another priority).
+]0;root@selinux:~[root@selinux ~]# ex[K[Kexit
+logout
+]0;vagrant@selinux:~[vagrant@selinux ~]$ exit
+logout
+[?2004h]0;alexey@UbuntuOTUS: ~/DZ12[01;32malexey@UbuntuOTUS[00m:[01;34m~/DZ12[00m$ exit
+[?2004lexit
+
+Script done on 2024-01-17 11:01:30+03:00 [COMMAND_EXIT_CODE="0"]
